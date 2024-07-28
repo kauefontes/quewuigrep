@@ -14,11 +14,11 @@ To install Quewuigrep, you need to have Rust installed on your machine. If you d
 
 Clone the repository and build the project:
 
-```sh
+``sh
 git clone https://github.com/yourusername/quewuigrep.git
 cd quewuigrep
 cargo build --release
-```
+``
 
 The executable will be located in the `target/release` directory.
 
@@ -26,26 +26,26 @@ The executable will be located in the `target/release` directory.
 
 To use Quewuigrep, run the following command:
 
-```sh
+``sh
 ./quewuigrep <query> <filename>
-```
+``
 
 - `<query>`: The word or phrase you want to search for.
 - `<filename>`: The file in which to search.
 
 ### Example
 
-```sh
+``sh
 ./quewuigrep "search_term" example.txt
-```
+``
 
 ### Case-insensitive Search
 
 To perform a case-insensitive search, set the `CASE_INSENSITIVE` environment variable:
 
-```sh
+``sh
 CASE_INSENSITIVE=1 ./quewuigrep "search_term" example.txt
-```
+``
 
 ## Project Structure
 
@@ -56,9 +56,9 @@ CASE_INSENSITIVE=1 ./quewuigrep "search_term" example.txt
 
 To run the tests, use the following command:
 
-```sh
+``sh
 cargo test
-```
+``
 
 ## Contributing
 
