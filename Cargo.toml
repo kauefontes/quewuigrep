@@ -1,6 +1,7 @@
 [package]
 name = "quewuigrep"
 version = "0.1.0"
+authors = ["quewui"]
 edition = "2021"
 
 [dependencies]
