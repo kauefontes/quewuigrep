@@ -1,5 +1,25 @@
 use std::{env, error::Error, fs};
 
+/// Runs the search based on the provided configuration.
+/// 
+/// # Arguments
+/// 
+/// * `config` - A `Config` struct containing the query, filename, and case sensitivity flag.
+/// 
+/// # Returns
+/// 
+/// * `Result<(), Box<dyn Error>>` - Returns `Ok(())` if successful, or an error if something goes wrong.
+/// 
+/// # Examples
+/// 
+/// ```
+/// use quewuigrep::{Config, run};
+/// use std::env;
+/// 
+/// let args: Vec<String> = vec!["program".into(), "query".into(), "filename.txt".into()];
+/// let config = Config::new(&args).unwrap();
+/// run(config).unwrap();
+/// ```
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     let contents = fs::read_to_string(config.filename)?;
 
@@ -14,6 +34,26 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
+/// Holds the configuration for the search.
+/// 
+/// # Fields
+/// 
+/// * `query` - The string to search for.
+/// * `filename` - The name of the file to search in.
+/// * `case_sensitive` - A flag indicating whether the search should be case-sensitive.
+/// 
+/// # Examples
+/// 
+/// ```
+/// use quewuigrep::Config;
+/// use std::env;
+/// 
+/// let args: Vec<String> = vec!["program".into(), "query".into(), "filename.txt".into()];
+/// let config = Config::new(&args).unwrap();
+/// assert_eq!(config.query, "query");
+/// assert_eq!(config.filename, "filename.txt");
+/// assert!(config.case_sensitive);
+/// ```
 pub struct Config {
     pub query: String,
     pub filename: String,
@@ -21,6 +61,28 @@ pub struct Config {
 }
 
 impl Config {
+    /// Creates a new `Config` instance from command-line arguments.
+    /// 
+    /// # Arguments
+    /// 
+    /// * `args` - An iterator over the command-line arguments.
+    /// 
+    /// # Returns
+    /// 
+    /// * `Result<Config, &'static str>` - Returns a `Config` instance if successful, or an error message if not.
+    /// 
+    /// # Examples
+    /// 
+    /// ```
+    /// use quewuigrep::Config;
+    /// use std::env;
+    /// 
+    /// let args: Vec<String> = vec!["program".into(), "query".into(), "filename.txt".into()];
+    /// let config = Config::new(&args).unwrap();
+    /// assert_eq!(config.query, "query");
+    /// assert_eq!(config.filename, "filename.txt");
+    /// assert!(config.case_sensitive);
+    /// ```
     pub fn new(mut args: env::Args) -> Result<Config, &'static str> {
         args.next();
 
@@ -44,6 +106,32 @@ impl Config {
     }
 }
 
+/// Searches for the query string in the contents, case-sensitive.
+/// 
+/// # Arguments
+/// 
+/// * `query` - The string to search for.
+/// * `contents` - The contents of the file to search in.
+/// 
+/// # Returns
+/// 
+/// * `Vec<&str>` - A vector of lines that contain the query string.
+/// 
+/// # Examples
+/// 
+/// ```
+/// use quewuigrep::search;
+/// 
+/// let query = "duct";
+/// let contents = "\
+/// Rust:
+/// safe, fast, productive.
+/// Pick three.
+/// Duct tape.";
+/// 
+/// let result = search(query, contents);
+/// assert_eq!(result, vec!["safe, fast, productive."]);
+/// ```
 pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
     contents
         .lines()
@@ -51,6 +139,32 @@ pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
         .collect()
 }
 
+/// Searches for the query string in the contents, case-insensitive.
+/// 
+/// # Arguments
+/// 
+/// * `query` - The string to search for.
+/// * `contents` - The contents of the file to search in.
+/// 
+/// # Returns
+/// 
+/// * `Vec<&str>` - A vector of lines that contain the query string, ignoring case.
+/// 
+/// # Examples
+/// 
+/// ```
+/// use quewuigrep::search_case_insensitive;
+/// 
+/// let query = "rUsT";
+/// let contents = "\
+/// Rust:
+/// safe, fast, productive.
+/// Pick three.
+/// Trust me.";
+/// 
+/// let result = search_case_insensitive(query, contents);
+/// assert_eq!(result, vec!["Rust:", "Trust me."]);
+/// ```
 pub fn search_case_insensitive<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
     let query = query.to_lowercase();
     let mut results = Vec::new();
