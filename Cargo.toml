@@ -1,7 +1,9 @@
 [package]
 name = "quewuigrep"
+description = "A simple grep-like tool written in Rust."
 version = "0.1.0"
 authors = ["quewui"]
 edition = "2021"
+license = "MIT"
 
 [dependencies]
